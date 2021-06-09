@@ -1,0 +1,51 @@
+plugins {
+	id 'org.springframework.boot' version '2.4.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.odzywkowo'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaLanguageVersion.of(8)
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	jcenter()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url "http://repo.spring.io/libs-snapshot" }
+	maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+	implementation 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation 'org.springframework.boot:spring-boot-starter:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-web:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-logging:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:2.4.2'
+	implementation 'org.springframework.boot:spring-boot-starter-mail:2.4.0'
+	implementation 'mysql:mysql-connector-java'
+
+	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
+	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
+
+	//swagger
+	implementation "io.springfox:springfox-boot-starter:3.0.0"
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test:2.4.2'
+}
+
+test {
+	useJUnitPlatform()
+}
