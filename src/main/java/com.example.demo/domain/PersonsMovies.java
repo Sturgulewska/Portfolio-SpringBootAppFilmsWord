@@ -1,8 +1,7 @@
 package com.example.demo.domain;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import com.example.demo.domain.dto.*;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +11,8 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "persons_movies")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PersonsMovies {
 
     @GeneratedValue
@@ -19,18 +20,20 @@ public class PersonsMovies {
     private Long id;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "person_movies",
+    @JoinTable(name = "persons_movies",
             joinColumns = @JoinColumn(name = "person_id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private List<Movies> listMovieEnti = new ArrayList<Movies>();
+    private Movies movies;
 
     @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "person_movies",
+    @JoinTable(name = "persons_movies",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private List<Persons> listPersonEnti = new ArrayList<Persons>();
+    private Persons persons;
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "job_id")
     private Jobs jobs;
+
+
 }

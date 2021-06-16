@@ -25,8 +25,9 @@ public class Persons {
 
 
     @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn (name = "country_id")
+    @JoinColumn(name = "country_id")
     private Countries countries;
 
-
+    @Column(name = "picture_path")
+    private String picturePath;
 }

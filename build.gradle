@@ -39,6 +39,9 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
 
+	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
 	//swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"
 

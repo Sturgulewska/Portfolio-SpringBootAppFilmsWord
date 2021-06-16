@@ -1,14 +1,13 @@
 package com.example.demo.service;
 
 import com.example.demo.domain.*;
-import com.example.demo.domain.dto.*;
 import com.example.demo.repository.JobsRepository;
 import com.example.demo.repository.MoviesRepository;
 import com.example.demo.repository.PersonsMoviesRepository;
 import com.example.demo.repository.PersonsRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 @Service
@@ -18,86 +17,40 @@ public class PersonsMoviesService {
     private final PersonsRepository personsRepository;
     private final MoviesRepository moviesRepository;
     private final JobsRepository jobsRepository;
+    private final EmailService emailService;
 
 
-    public PersonsMoviesService(PersonsMoviesRepository personsMoviesRepository, EmailService emailService, PersonsRepository personsRepository, MoviesRepository moviesRepository, JobsRepository jobsRepository) {
+    public PersonsMoviesService(PersonsMoviesRepository personsMoviesRepository, EmailService emailService, PersonsRepository personsRepository, MoviesRepository moviesRepository, JobsRepository jobsRepository, EmailService emailService1) {
         this.personsMoviesRepository = personsMoviesRepository;
         this.personsRepository = personsRepository;
         this.moviesRepository = moviesRepository;
         this.jobsRepository = jobsRepository;
+        this.emailService = emailService1;
     }
 
     public PersonsMovies savePersonMovies(PersonsMovies personsMovies) {
         return personsMoviesRepository.save(personsMovies);
     }
 
-    public Optional<PersonsMovies> findByIdPersons(Long id) {
+    public Optional<PersonsMovies> findById(Long id) {
         return personsMoviesRepository.findById(id);
     }
 
-    public PersonsMoviesService createPersonsMovies(PersonsMoviesService personsMovies) {
-        personsMovies.getPersonsList();
-        personsMovies.getMovieDtoList();
-        return  personsMovies;
-
-    }
-/*
-    PersonsMovies personsMovies = new PersonsMovies();
-        personsMovies.setListMovieEnti(getMovieDtoList);
-    List<Movies> moviesList = movies.getMoviesList();
-    List<Persons> personsList = persons.getPersonsDtoList();
-
-        personsMovies.setListMovieEnti(moviesList);
-        personsMovies.setListPersonEnti(personsList);
+    public PersonsMovies createPersonsMoviesJob(Movies movies, Persons persons, Jobs jobs) {
+        PersonsMovies personsMovies = new PersonsMovies();
         personsMovies.setJobs(jobs);
-
-        /*
-          public OrderInfoDto getOrderInfo(ShopOrder shopOrder) {
-        OrderInfoDto orderInfoDto = new OrderInfoDto();
-        List<Product> productList = shopOrder.getProductList();
-        List<ProductRowDto> productRowDtos = new ArrayList<>();
-
-
-                orderInfoDto.setProductList(productRowDtos);
-
-         */
-
-
-    public PersonsDtoList getPersonsList() {
-        PersonsDtoList personDto = new PersonsDtoList();
-        List<PersonsDto> personsDtoList = personDto.getPersonsDtoList();
-        List<Persons> personsList = (List<Persons>) personsRepository.findAll();
-
-        personsDtoList.forEach(p -> {
-            PersonsDto personsDto = new PersonsDto(p.getFirstName(), p.getLasName(), p.getCountriesId());
-            personsDtoList.add(personsDto);
-        });
-        return personDto;
+        personsMovies.setPersons(persons);
+        personsMovies.setMovies(movies);
+        return savePersonMovies(personsMovies);
     }
-    public MovieDtoList getMovieDtoList() {
-        MovieDtoList movieDto = new MovieDtoList();
-        List<MoviesDto> moviesDtoList = movieDto.getMoviesList();
-        List<Movies> moviesList = (List<Movies>) moviesRepository.findAll();
 
-        moviesDtoList.forEach(m -> {
-            MoviesDto moviesDto = new MoviesDto(m.getTitle(), m.getGenreId(), m.getProductionYear(), m.getCountrieId());
-            moviesDtoList.add(moviesDto);
-        });
-        return movieDto;
+
+     public void sendPhotoFilms(PersonsMovies personsMovies) throws MessagingException {
+        String email  = personsMovies.getPersons().getPicturePath();
+        String content = " ";
+         emailService.sendEmail(email, "Zdjęcie do filmu", content);
 
     }
-/*
-    public JobDtoList getJobList() {
-        JobDtoList jobDto = new JobDtoList();
-        List<JobDto> jobDtoLists = jobDto.getJobsList();
-        List<Jobs> jobsList = (List<Jobs>) jobsRepository.findAll();
-
-        jobDtoLists.forEach(j -> {
-            JobDto jobDto1 = new JobDto(j.getName());
-            jobDtoLists.add(jobDto1);
-
-        });
-        return jobDto;
-    }
-*/
 }
+
+

@@ -4,16 +4,20 @@ import com.example.demo.domain.Countries;
 import com.example.demo.domain.Persons;
 import com.example.demo.domain.dto.ErrorDto;
 import com.example.demo.domain.dto.PersonsDto;
+import com.example.demo.domain.dto.SavePersonPictureDto;
 import com.example.demo.service.CountriesService;
 import com.example.demo.service.JobService;
 import com.example.demo.service.MoviesService;
 import com.example.demo.service.PersonsService;
+import com.example.demo.service.utils.PersonPictureValidator;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,13 +39,20 @@ public class PersonsController {
         this.countriesService = countriesService;
     }
 
-    @RequestMapping(value = "/getFindPersons/{personId}", method = RequestMethod.GET)
+    @RequestMapping(
+            value = "/getFindPersons/{personId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Object> getFindPerson(@PathVariable("personId") Long personId) {
         Optional<Persons> personsOptional = personsService.findByIdPersons(personId);
         return new ResponseEntity<>(personsOptional, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/add_person", method = RequestMethod.POST)
+    @RequestMapping(value = "/add_person",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Object> addPerson(@RequestBody @Valid PersonsDto personsDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ErrorDto> errorDtoList = new ArrayList<>();
@@ -57,5 +68,31 @@ public class PersonsController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(
+            value = "/set_person_picture",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Object> setPersonPicture(@ModelAttribute @Valid SavePersonPictureDto dto, BindingResult br) throws IOException {
+        if (br.hasErrors()) {
+            List<ErrorDto>errorDtoList = new ArrayList<>();
+            br.getFieldErrors().forEach(e->errorDtoList.add(new ErrorDto(e.getDefaultMessage(), e.getField())));
+            return new ResponseEntity<>(errorDtoList, HttpStatus.BAD_REQUEST);
+        }
 
+        Optional<Persons> optionalPerson = personsService.findByIdPersons(dto.getPersonId());
+        if (optionalPerson.isEmpty()) {
+            ErrorDto errorDto = new ErrorDto("Podany użytkownik nie istnieje!", "personId");
+            return new ResponseEntity<>(errorDto, HttpStatus.BAD_REQUEST);
+        }
+
+        PersonPictureValidator validator = new PersonPictureValidator();
+        ErrorDto validateResult = validator.validateFile(dto.getFile());
+        if (validateResult.isError()) {
+            return new ResponseEntity<>(validateResult, HttpStatus.BAD_REQUEST);
+        }
+
+        personsService.savePersonPicture(optionalPerson.get(), dto.getFile());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

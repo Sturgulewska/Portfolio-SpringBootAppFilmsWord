@@ -13,7 +13,6 @@ import javax.validation.constraints.Pattern;
 public class PersonsDto {
 private String firstName;
 private String lasName;
-
 private Long countriesId;
 }
 

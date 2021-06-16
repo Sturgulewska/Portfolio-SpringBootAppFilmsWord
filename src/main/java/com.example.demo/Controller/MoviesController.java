@@ -9,6 +9,7 @@ import com.example.demo.service.CountriesService;
 import com.example.demo.service.GenreService;
 import com.example.demo.service.MoviesService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -40,14 +41,19 @@ public class MoviesController {
 
     @RequestMapping(
             value = "/getMovieId/{movieId}",
-            method = RequestMethod.GET
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+
     )
     public ResponseEntity<Object> getMovieId(@PathVariable("movieId") Long id) {
         Optional<Movies> moviesOptional = moviesService.findById(id);
         return new ResponseEntity<Object>(moviesOptional, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/addMovie", method = RequestMethod.POST)
+    @RequestMapping(value = "/addMovie",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<Object> addMovie(@RequestBody @Valid MoviesDto moviesDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             List<ErrorDto> errorDtoList = new ArrayList<>();
