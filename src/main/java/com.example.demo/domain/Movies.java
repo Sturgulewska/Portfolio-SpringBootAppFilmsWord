@@ -33,6 +33,10 @@ public class Movies {
     @JoinColumn(name = "country_id")
     private Countries countries;
 
-
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name = "persons_movies",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id"))
+    private List<Persons> personList;
 }
 

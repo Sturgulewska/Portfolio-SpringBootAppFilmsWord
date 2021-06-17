@@ -1,12 +1,8 @@
 package com.example.demo.domain;
-
-import com.example.demo.domain.dto.*;
+;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @Entity
@@ -19,21 +15,12 @@ public class PersonsMovies {
     @Id
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "persons_movies",
-            joinColumns = @JoinColumn(name = "person_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private Movies movies;
+    @Column(name = "movie_id")
+    private Long movieId;
 
-    @ManyToMany(cascade = CascadeType.REFRESH)
-    @JoinTable(name = "persons_movies",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private Persons persons;
+    @Column(name = "person_id")
+    private Long personId;
 
-    @ManyToOne(cascade = CascadeType.REFRESH)
-    @JoinColumn(name = "job_id")
-    private Jobs jobs;
-
-
+    @Column(name = "job_id")
+    private Long jobs;
 }

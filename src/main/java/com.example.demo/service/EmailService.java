@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
+import java.util.Map;
 
 @Service
 public class EmailService {
@@ -26,17 +28,31 @@ public class EmailService {
         this.emailConfiguration = emailConfiguration;
     }
 
-    public void sendEmail(String email, String tittle, String body) throws MessagingException {
-        MimeMessage message = createMessage(email, tittle, body);
+    public void sendEmail(String email, String tittle, String body, Map<String, File> attachments) throws MessagingException {
+        MimeMessage message = createMessage(email, tittle, body, attachments);
         javaMailSender.send(message);
     }
 
-    private MimeMessage createMessage(String email, String title, String body) throws MessagingException {
+    public void sendEmail(String email, String tittle, String body) throws MessagingException {
+        MimeMessage message = createMessage(email, tittle, body, null);
+        javaMailSender.send(message);
+    }
+
+    private MimeMessage createMessage(String email, String title, String body, Map<String, File> attachments) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
         messageHelper.setSubject(title);
         messageHelper.setText(body);
         messageHelper.setTo(email);
+
+        if (attachments != null) {
+            for (Map.Entry<String, File> entry : attachments.entrySet()) {
+                String filename = entry.getKey();
+                File file = entry.getValue();
+                messageHelper.addAttachment(filename, file);
+            }
+        }
+
         messageHelper.setFrom(emailConfiguration.getEmailSender());
         return message;
     }

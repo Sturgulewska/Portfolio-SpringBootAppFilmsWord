@@ -8,6 +8,7 @@ import com.example.demo.repository.PersonsRepository;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
@@ -36,21 +37,7 @@ public class PersonsMoviesService {
         return personsMoviesRepository.findById(id);
     }
 
-    public PersonsMovies createPersonsMoviesJob(Movies movies, Persons persons, Jobs jobs) {
-        PersonsMovies personsMovies = new PersonsMovies();
-        personsMovies.setJobs(jobs);
-        personsMovies.setPersons(persons);
-        personsMovies.setMovies(movies);
-        return savePersonMovies(personsMovies);
     }
 
-
-     public void sendPhotoFilms(PersonsMovies personsMovies) throws MessagingException {
-        String email  = personsMovies.getPersons().getPicturePath();
-        String content = " ";
-         emailService.sendEmail(email, "Zdjęcie do filmu", content);
-
-    }
-}
 
 

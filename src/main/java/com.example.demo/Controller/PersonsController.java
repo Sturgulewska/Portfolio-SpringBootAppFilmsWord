@@ -1,7 +1,9 @@
 package com.example.demo.Controller;
 
 import com.example.demo.domain.Countries;
+import com.example.demo.domain.Movies;
 import com.example.demo.domain.Persons;
+import com.example.demo.domain.PersonsMovies;
 import com.example.demo.domain.dto.ErrorDto;
 import com.example.demo.domain.dto.PersonsDto;
 import com.example.demo.domain.dto.SavePersonPictureDto;
@@ -16,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -94,5 +97,32 @@ public class PersonsController {
 
         personsService.savePersonPicture(optionalPerson.get(), dto.getFile());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/sendPersonPhoto/{personId}", method = RequestMethod.GET)
+    public ResponseEntity<Object> sendPersonPhoto(@PathVariable("personId") Long personId) throws MessagingException {
+        Optional<Persons> optionalPersons = personsService.findByIdPersons(personId);
+        if (optionalPersons.isEmpty()) {
+            return new ResponseEntity<>("Podane zagadnienie, nie istnieje w bazie!!", HttpStatus.BAD_REQUEST);
+        }
+
+        Persons persons = optionalPersons.get();
+        personsService.sendPhotoFilms(persons);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/getMovie/{movieId}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public ResponseEntity<Object> getPersonsMovies(@PathVariable("movieId") Long movieId) {
+        Optional<Movies> optionalPersonsMovies = moviesService.findById(movieId);
+        if (optionalPersonsMovies.isEmpty()) {
+            return new ResponseEntity<>("Podany film, nie istnieje w bazie!!", HttpStatus.BAD_REQUEST);
+        }
+
+        return new ResponseEntity<>(optionalPersonsMovies, HttpStatus.OK);
     }
 }

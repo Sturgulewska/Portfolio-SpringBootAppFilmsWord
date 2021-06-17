@@ -30,4 +30,13 @@ public class Persons {
 
     @Column(name = "picture_path")
     private String picturePath;
+
+    @Column(name = "e_mail")
+    private String eMail;
+
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinTable(name="persons_movies", joinColumns = {@JoinColumn(name="person_id")},
+            inverseJoinColumns = {@JoinColumn(name="job_id")})
+    private List<Jobs> jobsList;
 }
+
