@@ -1,5 +1,5 @@
 package com.example.demo.domain;
-;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "persons_movies")
-@NoArgsConstructor
-@AllArgsConstructor
-public class PersonsMovies {
+@RequiredArgsConstructor
+
+public class PersonsMoviesEntity {
 
     @GeneratedValue
     @Id

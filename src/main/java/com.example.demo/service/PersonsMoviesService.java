@@ -5,14 +5,15 @@ import com.example.demo.repository.JobsRepository;
 import com.example.demo.repository.MoviesRepository;
 import com.example.demo.repository.PersonsMoviesRepository;
 import com.example.demo.repository.PersonsRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PersonsMoviesService {
+
 
     private final PersonsMoviesRepository personsMoviesRepository;
     private final PersonsRepository personsRepository;
@@ -21,19 +22,11 @@ public class PersonsMoviesService {
     private final EmailService emailService;
 
 
-    public PersonsMoviesService(PersonsMoviesRepository personsMoviesRepository, EmailService emailService, PersonsRepository personsRepository, MoviesRepository moviesRepository, JobsRepository jobsRepository, EmailService emailService1) {
-        this.personsMoviesRepository = personsMoviesRepository;
-        this.personsRepository = personsRepository;
-        this.moviesRepository = moviesRepository;
-        this.jobsRepository = jobsRepository;
-        this.emailService = emailService1;
+    public PersonsMoviesEntity savePersonMovies(PersonsMoviesEntity personsMoviesEntity) {
+        return personsMoviesRepository.save(personsMoviesEntity);
     }
 
-    public PersonsMovies savePersonMovies(PersonsMovies personsMovies) {
-        return personsMoviesRepository.save(personsMovies);
-    }
-
-    public Optional<PersonsMovies> findById(Long id) {
+    public Optional<PersonsMoviesEntity> findById(Long id) {
         return personsMoviesRepository.findById(id);
     }
 

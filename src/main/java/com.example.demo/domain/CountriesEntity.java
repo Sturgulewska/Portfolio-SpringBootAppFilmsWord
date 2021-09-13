@@ -1,18 +1,14 @@
 package com.example.demo.domain;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
-import java.io.Serializable;
 
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Data
 @Entity
 @Table(name = "countries")
-public class Countries {
+public class CountriesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

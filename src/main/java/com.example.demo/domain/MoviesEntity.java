@@ -3,15 +3,13 @@ package com.example.demo.domain;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "movies")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class Movies {
+@RequiredArgsConstructor
+public class MoviesEntity {
 
     @Id
     @GeneratedValue
@@ -23,7 +21,7 @@ public class Movies {
     @Setter(AccessLevel.PUBLIC)
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "genre_id")
-    private Genre genre;
+    private GenreEntity genreEntity;
 
     @Column(name = "production_year")
     private String productionYear;
@@ -31,12 +29,12 @@ public class Movies {
     @Setter(AccessLevel.PUBLIC)
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "country_id")
-    private Countries countries;
+    private CountriesEntity countries;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "persons_movies",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private List<Persons> personList;
+    private List<PersonsEntity> personList;
 }
 

@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.odzywkowo'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = JavaLanguageVersion.of(8)
+sourceCompatibility = JavaLanguageVersion.of(11)
 
 configurations {
 	compileOnly {
@@ -39,8 +39,14 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.sun.mail/javax.mail
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.1'
 
+	// https://mvnrepository.com/artifact/commons-io/commons-io
+	implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+
 	// https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
+
+// https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto
+	implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.5.2'
 
 	//swagger
 	implementation "io.springfox:springfox-boot-starter:3.0.0"

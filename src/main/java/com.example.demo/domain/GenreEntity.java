@@ -1,15 +1,15 @@
 package com.example.demo.domain;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
 @Table(name = "genres")
-@NoArgsConstructor
-public class Genre {
+@RequiredArgsConstructor
+public class GenreEntity {
     @Id
     @GeneratedValue
     private Long id;

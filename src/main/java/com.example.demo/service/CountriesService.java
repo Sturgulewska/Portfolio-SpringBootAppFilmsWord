@@ -1,32 +1,40 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Countries;
+import com.example.demo.domain.CountriesEntity;
 import com.example.demo.repository.CountriesRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class CountriesService {
 
     private final CountriesRepository countriesRepository;
 
-    public CountriesService(CountriesRepository countriesRepository) {
-        this.countriesRepository = countriesRepository;
+/*    @PostConstruct
+    public void postConstructMethod() {
+        System.out.println("Jestem wywolany po konstruktorze :)");
     }
 
-    public Countries createCountries(String name) {
-        Countries countries = new Countries();
+    @PreDestroy
+    public void beforeDestroyMethod() {
+        System.out.println("Jestem wywolany przed zniszczeniem :)");
+    }
+*/
+
+    public CountriesEntity createCountries(String name) {
+        CountriesEntity countries = new CountriesEntity();
         countries.setName(name);
         return saveCountries(countries);
-
     }
 
-    public Countries saveCountries(Countries countries) {
+    public CountriesEntity saveCountries(CountriesEntity countries) {
         return countriesRepository.save(countries);
     }
 
-    public Optional<Countries> findById(Long id) {
+    public Optional<CountriesEntity> findById(Long id) {
         return countriesRepository.findById(id);
     }
 }

@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Map;
 
 @Service
+
 public class EmailService {
     private final JavaMailSender javaMailSender;
 
