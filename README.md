@@ -26,7 +26,7 @@ Let's say an individual wants to find out which international actors are also sc
 1. Go to directory where you want to clone this repository.<br></br>
 2. Run Git Bash there (Right click -> Git Bash Here).<br></br>
 3. Clone repository with command:
-$ git clone https://github.com/Sturgulewska/ShopHair.git
+$ git clone https://github.com/Sturgulewska/filmsword.git
 
 <h4>Run Backend</h4>
 1. Go to cloned directory<br></br>
