@@ -4,13 +4,14 @@ package com.example.demo.domain;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
+import java.io.File;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Entity
 @Data
 @Table(name = "persons")
-public class PersonsEntity {
+public class Persons {
 
     @Id
     @GeneratedValue
@@ -25,7 +26,7 @@ public class PersonsEntity {
 
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "country_id")
-    private CountriesEntity countries;
+    private Countries countries;
 
     @Column(name = "picture_path")
     private String picturePath;
@@ -36,6 +37,6 @@ public class PersonsEntity {
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name="persons_movies", joinColumns = {@JoinColumn(name="person_id")},
             inverseJoinColumns = {@JoinColumn(name="job_id")})
-    private List<JobsEntity> jobsEntityList;
+    private List<Jobs> jobsList;
 }
 

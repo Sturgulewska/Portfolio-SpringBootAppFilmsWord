@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.GenreEntity;
+import com.example.demo.domain.Genre;
 import com.example.demo.repository.GenreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,17 +13,17 @@ public class GenreService {
 
     private final GenreRepository genreRepository;
 
-    public GenreEntity createGenre(String name) {
-        GenreEntity genreEntity = new GenreEntity();
-        genreEntity.setName(name);
-        return saveGenre(genreEntity);
+    public Genre createGenre(String name) {
+        Genre genre = new Genre();
+        genre.setName(name);
+        return saveGenre(genre);
     }
 
-    public GenreEntity saveGenre(GenreEntity genreEntity) {
-        return genreRepository.save(genreEntity);
+    public Genre saveGenre(Genre genre) {
+        return genreRepository.save(genre);
     }
 
-    public Optional<GenreEntity> findByIdGenre(Long id) {
+    public Optional<Genre> findByIdGenre(Long id) {
         return genreRepository.findById(id);
     }
 }

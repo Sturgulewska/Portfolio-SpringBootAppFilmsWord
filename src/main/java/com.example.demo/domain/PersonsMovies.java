@@ -7,9 +7,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "persons_movies")
-@RequiredArgsConstructor
-
-public class PersonsMoviesEntity {
+@NoArgsConstructor
+@AllArgsConstructor
+public class PersonsMovies {
 
     @GeneratedValue
     @Id

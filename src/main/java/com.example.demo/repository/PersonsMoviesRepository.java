@@ -1,7 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.domain.PersonsMoviesEntity;
+import com.example.demo.domain.PersonsMovies;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public interface PersonsMoviesRepository extends CrudRepository<PersonsMoviesEntity, Long> {
+@Repository
+public interface PersonsMoviesRepository extends CrudRepository<PersonsMovies, Long> {
 }

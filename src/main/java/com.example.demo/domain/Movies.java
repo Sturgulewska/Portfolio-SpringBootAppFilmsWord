@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "movies")
 @Data
 @RequiredArgsConstructor
-public class MoviesEntity {
+public class Movies {
 
     @Id
     @GeneratedValue
@@ -21,7 +21,7 @@ public class MoviesEntity {
     @Setter(AccessLevel.PUBLIC)
     @OneToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "genre_id")
-    private GenreEntity genreEntity;
+    private Genre genre;
 
     @Column(name = "production_year")
     private String productionYear;
@@ -29,12 +29,12 @@ public class MoviesEntity {
     @Setter(AccessLevel.PUBLIC)
     @ManyToOne(cascade = CascadeType.REFRESH)
     @JoinColumn(name = "country_id")
-    private CountriesEntity countries;
+    private Countries countries;
 
     @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinTable(name = "persons_movies",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id"))
-    private List<PersonsEntity> personList;
+    private List<Persons> personList;
 }
 

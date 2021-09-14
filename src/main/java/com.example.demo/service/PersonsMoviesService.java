@@ -16,21 +16,18 @@ public class PersonsMoviesService {
 
 
     private final PersonsMoviesRepository personsMoviesRepository;
-    private final PersonsRepository personsRepository;
-    private final MoviesRepository moviesRepository;
-    private final JobsRepository jobsRepository;
-    private final EmailService emailService;
 
 
-    public PersonsMoviesEntity savePersonMovies(PersonsMoviesEntity personsMoviesEntity) {
-        return personsMoviesRepository.save(personsMoviesEntity);
-    }
-
-    public Optional<PersonsMoviesEntity> findById(Long id) {
+    public Optional<PersonsMovies> findById(Long id) {
         return personsMoviesRepository.findById(id);
     }
 
+    public PersonsMovies savePersonMovies(PersonsMovies personsMovies) {
+        return personsMoviesRepository.save(personsMovies);
+
     }
+}
+
 
 
 

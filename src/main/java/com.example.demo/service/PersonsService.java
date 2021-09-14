@@ -2,8 +2,8 @@ package com.example.demo.service;
 
 
 import com.example.demo.configuration.GeneralConfiguration;
-import com.example.demo.domain.CountriesEntity;
-import com.example.demo.domain.PersonsEntity;
+import com.example.demo.domain.Countries;
+import com.example.demo.domain.Persons;
 import com.example.demo.domain.dto.PersonsDto;
 import com.example.demo.repository.PersonsRepository;
 import com.example.demo.service.utils.ImageUtils;
@@ -31,23 +31,25 @@ public class PersonsService {
     private final EmailService emailService;
 
 
-    public PersonsEntity createPersons(PersonsDto personsDto, CountriesEntity countries) {
-        PersonsEntity personsEntity = new PersonsEntity();
-        personsEntity.setFirstName(personsDto.getFirstName());
-        personsEntity.setLastName(personsDto.getLasName());
-        personsEntity.setCountries(countries);
-        return savePersons(personsEntity);
+    public Persons createPersons(PersonsDto personsDto, Countries countries) {
+        Persons persons = new Persons();
+        persons.setFirstName(personsDto.getFirstName());
+        persons.setLastName(personsDto.getLasName());
+        persons.setCountries(countries);
+        persons.setEMail(personsDto.getEMail());
+        persons.setPicturePath(personsDto.getPicturePath());
+        return savePersons(persons);
     }
 
-    public Optional<PersonsEntity> findByIdPersons(Long id) {
+    public Optional<Persons> findByIdPersons(Long id) {
         return personsRepository.findById(id);
     }
 
-    public PersonsEntity savePersons(PersonsEntity personsEntity) {
-        return personsRepository.save(personsEntity);
+    public Persons savePersons(Persons persons) {
+        return personsRepository.save(persons);
     }
 
-    public void savePersonPicture(PersonsEntity personsEntity, MultipartFile picture) throws IOException {
+    public void savePersonPicture(Persons persons, MultipartFile picture) throws IOException {
         String savePath = generalConfiguration.getUploadPath();
         String saveFilename = RandomStringUtils.randomAlphanumeric(15) + ".jpg";
         String saveFullPath = savePath + "/" + saveFilename;
@@ -59,12 +61,12 @@ public class PersonsService {
         FileOutputStream fileOutputStream = new FileOutputStream(saveFullPath);
         fileOutputStream.write(imageBytes);
 
-        personsEntity.setPicturePath(saveFullPath);
-        savePersons(personsEntity);
+        persons.setPicturePath(saveFullPath);
+        savePersons(persons);
     }
 
-    public void sendPhotoFilms(PersonsEntity personsEntity) throws MessagingException {
-        String photoPath = personsEntity.getPicturePath();
+    public void sendPhotoFilms(Persons persons) throws MessagingException {
+        String photoPath = persons.getPicturePath();
         File file = new File(photoPath);
         if (!file.exists() || !file.isFile() || !file.canRead()) {
             throw new RuntimeException("Nie można wysłać jako załącznika, podanego pliku: " + photoPath);
@@ -72,6 +74,8 @@ public class PersonsService {
 
         Map<String, File> attachment = Map.of(file.getName(), file);
         String content = "Zdjęcie w załączniku!";
-        emailService.sendEmail(personsEntity.getEMail(), "Zdjęcie do filmu", content, attachment);
+        emailService.sendEmail(persons.getEMail(), "Zdjęcie do filmu", content, attachment);
     }
+
 }
+

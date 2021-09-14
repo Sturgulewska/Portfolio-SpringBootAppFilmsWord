@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.MoviesEntity;
+import com.example.demo.domain.Movies;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
@@ -27,13 +27,13 @@ public class CronService {
         }
 
         long randomMovieId = RandomUtils.nextLong(1, movieCount);
-        Optional<MoviesEntity> optionalMovie = moviesService.findById(randomMovieId);
+        Optional<Movies> optionalMovie = moviesService.findById(randomMovieId);
         if (optionalMovie.isEmpty()) {
             System.out.println("Wyliczono losowy ID, ale nie znaleziono w bazie!");
             return;
         }
 
-        MoviesEntity movie = optionalMovie.get();
+        Movies movie = optionalMovie.get();
         moviesService.sendMovie(movie);
     }
 }

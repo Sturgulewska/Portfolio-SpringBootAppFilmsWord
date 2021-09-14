@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.domain.CountriesEntity;
-import com.example.demo.domain.GenreEntity;
-import com.example.demo.domain.MoviesEntity;
+import com.example.demo.domain.Countries;
+import com.example.demo.domain.Genre;
+import com.example.demo.domain.Movies;
 import com.example.demo.domain.dto.ErrorDto;
 import com.example.demo.domain.dto.MoviesDto;
 import com.example.demo.service.CountriesService;
@@ -43,7 +43,7 @@ public class MoviesController {
 
     )
     public ResponseEntity<Object> getMovieId(@PathVariable("movieId") Long id) {
-        Optional<MoviesEntity> moviesOptional = moviesService.findById(id);
+        Optional<Movies> moviesOptional = moviesService.findById(id);
         return new ResponseEntity<Object>(moviesOptional, HttpStatus.OK);
     }
 
@@ -58,11 +58,11 @@ public class MoviesController {
             return new ResponseEntity<>(validateErrorDtoList, HttpStatus.BAD_REQUEST);
         }
 
-        Optional<CountriesEntity> optionalCountries = countriesService.findById(moviesDto.getCountrieId());
+        Optional<Countries> optionalCountries = countriesService.findById(moviesDto.getCountrieId());
         if (optionalCountries.isEmpty()) {
             return new ResponseEntity<>(new ErrorDto("Nie znaleziono kraju", "countries_id "), HttpStatus.BAD_REQUEST);
         }
-        Optional<GenreEntity> optionalGenre = genreService.findByIdGenre(moviesDto.getGenreId());
+        Optional<Genre> optionalGenre = genreService.findByIdGenre(moviesDto.getGenreId());
         if (optionalGenre.isEmpty()) {
             return new ResponseEntity<>(new ErrorDto("Nie znaleziono gatunku", "genre_id "), HttpStatus.BAD_REQUEST);
         }

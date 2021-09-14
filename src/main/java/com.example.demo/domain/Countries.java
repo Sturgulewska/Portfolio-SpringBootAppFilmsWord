@@ -1,20 +1,23 @@
 package com.example.demo.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Entity
 @Table(name = "countries")
-public class CountriesEntity {
+public class Countries {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name="name")
-    private  String name;
+    @Column(name = "name")
+    private String name;
 
 }
