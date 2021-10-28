@@ -1,11 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.CountriesEntity;
-import com.example.demo.domain.GenreEntity;
-import com.example.demo.domain.MoviesEntity;
+import com.example.demo.domain.*;
 import com.example.demo.domain.dto.MoviesDto;
 import com.example.demo.repository.MoviesRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,41 +12,44 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class MoviesService {
     private static Logger logger = LoggerFactory.getLogger(MoviesService.class);
 
     private final MoviesRepository moviesRepository;
     private final EmailService emailService;
 
+    public MoviesService(MoviesRepository moviesRepository, EmailService emailService) {
+        this.moviesRepository = moviesRepository;
+        this.emailService = emailService;
+    }
+
 
     public long getMovieCount() {
         return moviesRepository.count();
     }
 
-    public MoviesEntity createMovie(MoviesDto moviesDto, CountriesEntity countries, GenreEntity genreEntity) {
-        MoviesEntity moviesEntity = new MoviesEntity();
-        moviesEntity.setTitle(moviesDto.getTitle());
-        moviesEntity.setGenreEntity(genreEntity);
-        moviesEntity.setProductionYear(moviesDto.getProductionYear());
-        moviesEntity.setCountries(countries);
+    public Movies createMovie(MoviesDto moviesDto, Countries countries, Genre genre) {
+        Movies movies = new Movies();
+        movies.setTitle(moviesDto.getTitle());
+        movies.setGenre(genre);
+        movies.setProductionYear(moviesDto.getProductionYear());
+        movies.setCountries(countries);
 
-        return saveMovies(moviesEntity);
+        return saveMovies(movies);
     }
-    public Optional<MoviesEntity> findById(Long id) {
+    public Optional<Movies> findById(Long id) {
         return moviesRepository.findById(id);
     }
 
-    public MoviesEntity saveMovies(MoviesEntity moviesEntity) {
-        return moviesRepository.save(moviesEntity);
+    public Movies saveMovies(Movies movies) {
+        return moviesRepository.save(movies);
     }
 
-
-
-    public void sendMovie(MoviesEntity moviesEntity) throws MessagingException {
-        String content = "Film: " + moviesEntity.getTitle()
-                + "\n - rok produkcji: " + moviesEntity.getProductionYear()
-                + "\n - gatunek: " + moviesEntity.getGenreEntity().getName();
+    public void sendMovie(Movies movies, User user) throws MessagingException {
+        String content = "Film: " + movies.getTitle()
+                + "\n - rok produkcji: " + movies.getProductionYear()
+                + "\n - gatunek: " + movies.getGenre().getName();
 
         var list = new ArrayList<String>();
         list.add(content);
@@ -60,6 +60,6 @@ public class MoviesService {
         logger.warn("A WARN Message");
         logger.error("An ERROR Message");
 
-        emailService.sendEmail("sturgulewskaanna@gmail.com", "Losowy film!", content);
+        emailService.sendEmail(user.getEmail(), "Losowy film!", content);
     }
 }

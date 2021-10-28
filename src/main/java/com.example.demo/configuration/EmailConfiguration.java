@@ -23,4 +23,10 @@ public class EmailConfiguration {
 
     @Value("${mail.sender}")
     private String emailSender;
+
+    @Value("${mail.starttls.enable}")
+    private String emailStartTls;
+
+    @Value("${mail.auth}")
+    private String emailAuth;
 }
