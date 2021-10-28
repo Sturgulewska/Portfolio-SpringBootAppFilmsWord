@@ -34,6 +34,6 @@ public class CronService {
         }
 
         Movies movie = optionalMovie.get();
-        moviesService.sendMovie(movie);
+        // moviesService.sendMovie(movie);
     }
 }

@@ -1,11 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.domain.Countries;
-import com.example.demo.domain.Genre;
-import com.example.demo.domain.Movies;
+import com.example.demo.domain.*;
 import com.example.demo.domain.dto.MoviesDto;
 import com.example.demo.repository.MoviesRepository;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,12 +12,17 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+
 public class MoviesService {
     private static Logger logger = LoggerFactory.getLogger(MoviesService.class);
 
     private final MoviesRepository moviesRepository;
     private final EmailService emailService;
+
+    public MoviesService(MoviesRepository moviesRepository, EmailService emailService) {
+        this.moviesRepository = moviesRepository;
+        this.emailService = emailService;
+    }
 
 
     public long getMovieCount() {
@@ -44,9 +46,7 @@ public class MoviesService {
         return moviesRepository.save(movies);
     }
 
-
-
-    public void sendMovie(Movies movies) throws MessagingException {
+    public void sendMovie(Movies movies, User user) throws MessagingException {
         String content = "Film: " + movies.getTitle()
                 + "\n - rok produkcji: " + movies.getProductionYear()
                 + "\n - gatunek: " + movies.getGenre().getName();
@@ -60,6 +60,6 @@ public class MoviesService {
         logger.warn("A WARN Message");
         logger.error("An ERROR Message");
 
-        emailService.sendEmail("sturgulewskaanna@gmail.com", "Losowy film!", content);
+        emailService.sendEmail(user.getEmail(), "Losowy film!", content);
     }
 }

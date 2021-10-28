@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.configuration.EmailConfiguration;
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -9,7 +10,9 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.security.GeneralSecurityException;
 import java.util.Map;
+import java.util.Properties;
 
 @Service
 
@@ -18,12 +21,20 @@ public class EmailService {
 
     private final EmailConfiguration emailConfiguration;
 
-    public EmailService(EmailConfiguration emailConfiguration) {
+    public EmailService(EmailConfiguration emailConfiguration) throws GeneralSecurityException {
         JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();
         mailSenderImpl.setHost(emailConfiguration.getHost());
         mailSenderImpl.setPassword(emailConfiguration.getPassword());
         mailSenderImpl.setPort(emailConfiguration.getPort());
         mailSenderImpl.setUsername(emailConfiguration.getUsername());
+
+        MailSSLSocketFactory socketFactory = new MailSSLSocketFactory();
+        socketFactory.setTrustAllHosts(true);
+        
+        Properties props = mailSenderImpl.getJavaMailProperties();
+        props.put("mail.smtp.auth", emailConfiguration.getEmailAuth());
+        props.put("mail.smtp.starttls.enable", emailConfiguration.getEmailStartTls());
+        props.put("mail.smtp.ssl.socketFactory", socketFactory);
 
         this.javaMailSender = mailSenderImpl;
         this.emailConfiguration = emailConfiguration;

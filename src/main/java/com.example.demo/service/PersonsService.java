@@ -25,8 +25,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 
 public class PersonsService {
-    private final PersonsRepository personsRepository;
 
+    private final PersonsRepository personsRepository;
     private final GeneralConfiguration generalConfiguration;
     private final EmailService emailService;
 

@@ -15,17 +15,6 @@ public class CountriesService {
 
     private final CountriesRepository countriesRepository;
 
-    @PostConstruct
-    public void postConstructMethod() {
-        System.out.println("Jestem wywolany po konstruktorze :)");
-    }
-
-    @PreDestroy
-    public void beforeDestroyMethod() {
-        System.out.println("Jestem wywolany przed zniszczeniem :)");
-    }
-
-
     public Countries createCountries(String name) {
         Countries countries = new Countries();
         countries.setName(name);
